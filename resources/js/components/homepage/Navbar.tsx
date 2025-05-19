@@ -18,23 +18,15 @@ const Navbar = () => {
     "Contact Information",
   ]
 
-  // Add this function to handle search
   const handleSearch = (searchTerm) => {
     if (!searchTerm.trim()) return
-
-    // Add the search term to recent searches if it's not already there
     if (!recentSearches.includes(searchTerm)) {
       setRecentSearches((prev) => [searchTerm, ...prev.slice(0, 4)])
     }
-
-    // Here you would typically redirect to search results page
     console.log(`Searching for: ${searchTerm}`)
-
-    // Close the search dropdown after searching
     setShowSearch(false)
   }
 
-  // Add this function to handle removing items from recent searches
   const removeRecentSearch = (index, e) => {
     e.stopPropagation()
     setRecentSearches((prev) => prev.filter((_, i) => i !== index))
@@ -43,13 +35,8 @@ const Navbar = () => {
   const navItems = [
     {
       title: "ABOUT SLAAM",
-      href: "/",
-      dropdown: [
-        { title: "Our Mission", href: "/about/mission" },
-        { title: "History", href: "/about/history" },
-        { title: "Team", href: "/about/team" },
-        { title: "Partners", href: "/about/partners" },
-      ],
+      href: "/about", // Adjust to actual route
+      type: "link",
     },
     {
       title: "VOTING",
@@ -153,7 +140,7 @@ const Navbar = () => {
       <nav className="fixed top-0 left-0 w-full h-20 z-50 bg-white/10 backdrop-blur-md border-b border-white/20 shadow-md">
         <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <img src="/images/logo.png" alt="Logo" className="h-12 w-auto bg-white/10 p-1 rounded-full" />
+            <a href="/"><img src="/images/logo.png" alt="Logo" className="h-12 w-auto bg-white/10 p-1 rounded-full" /></a>
           </div>
 
           <ul className="flex items-center gap-6 text-white font-medium text-sm lg:text-base">
@@ -161,21 +148,25 @@ const Navbar = () => {
               <li
                 key={index}
                 className="relative"
-                onMouseEnter={() => setActiveDropdown(index)}
-                onMouseLeave={() => setActiveDropdown(null)}
+                onMouseEnter={() => item.dropdown && setActiveDropdown(index)}
+                onMouseLeave={() => item.dropdown && setActiveDropdown(null)}
               >
                 <div className="flex items-center gap-1 cursor-pointer">
-                  <button href={item.href} target="_blank" rel="noopener noreferrer">
-                    {item.title}
-                  </button>
-                  <ChevronDown
-                    size={14}
-                    className={`transition-transform ${activeDropdown === index ? "rotate-180" : ""}`}
-                  />
+                  {item.type === "link" || !item.dropdown ? (
+                    <a href={item.href} className="hover:underline">{item.title}</a>
+                  ) : (
+                    <>
+                      <button className="focus:outline-none">{item.title}</button>
+                      <ChevronDown
+                        size={14}
+                        className={`transition-transform ${activeDropdown === index ? "rotate-180" : ""}`}
+                      />
+                    </>
+                  )}
                 </div>
 
                 <AnimatePresence>
-                  {activeDropdown === index && (
+                  {activeDropdown === index && item.dropdown && (
                     <motion.div
                       variants={dropdownVariants}
                       initial="hidden"
@@ -192,8 +183,6 @@ const Navbar = () => {
                           >
                             <a
                               href={dropdownItem.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
                               className="text-gray-800 hover:text-indigo-600 flex justify-between items-center"
                             >
                               {dropdownItem.title}
@@ -249,7 +238,6 @@ const Navbar = () => {
               </div>
 
               <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Suggestions */}
                 <div>
                   <div className="flex items-center gap-2 mb-2 text-indigo-600 font-medium">
                     <TrendingUp size={18} />
@@ -275,7 +263,6 @@ const Navbar = () => {
                   </ul>
                 </div>
 
-                {/* Recent Searches */}
                 <div>
                   <div className="flex items-center gap-2 mb-2 text-indigo-600 font-medium">
                     <Clock size={18} />
