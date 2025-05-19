@@ -1,12 +1,12 @@
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import Navbar from '@/components/Navbar';
-import NextEvent from '@/components/NextEvent';
-import Artists from '@/components/artists';
-import Hero from '@/components/Hero';
-import About from '@/components/About';
-import ArtistShowcase from '@/components/ArtistShowcase';
-import Footer from '@/components/footer';
+import Navbar from '@/components/homepage/Navbar';
+import NextEvent from '@/components/homepage/NextEvent';
+import Artists from '@/components/homepage/artists';
+import Hero from '@/components/homepage/Hero';
+import About from '@/components/homepage/About';
+import ArtistShowcase from '@/components/homepage/ArtistShowcase';
+import Footer from '@/components/homepage/footer';
 
 
 export default function Home() {
